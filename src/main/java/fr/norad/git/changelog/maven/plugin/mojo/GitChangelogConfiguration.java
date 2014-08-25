@@ -74,7 +74,7 @@ public abstract class GitChangelogConfiguration extends AbstractMojo {
     private String changelogFormat;
 
     @Getter
-    @Parameter(defaultValue = "${project.name}\n\n${project.description}\n")
+    @Parameter(defaultValue = "\n  ${project.name} (${project.url})\n\n${project.description}\n\n")
     private String changelogHeader;
 
     @Getter
@@ -97,7 +97,7 @@ public abstract class GitChangelogConfiguration extends AbstractMojo {
 
     private Pair<Pattern, Set<String>> versionPatternWithCaptureNames;
     private Pair<Pattern, Set<String>> modifPatternWithCaptureNames;
-    private List<Pattern> modifIgnore;
+    private List<Pattern> modifToIgnore;
 
     public Pair<Pattern, Set<String>> getGitLogVersionPatternWithCaptureNames() {
         if (versionPatternWithCaptureNames == null) {
@@ -116,13 +116,13 @@ public abstract class GitChangelogConfiguration extends AbstractMojo {
     }
 
     public List<Pattern> getGitLogIgnorePatterns() {
-        if (modifIgnore == null) {
-            modifIgnore = new ArrayList<>(gitLogIgnorePatterns.size());
+        if (modifToIgnore == null) {
+            modifToIgnore = new ArrayList<>(gitLogIgnorePatterns.size());
             for (String modifIgnorePattern : gitLogIgnorePatterns) {
-                modifIgnore.add(compile(modifIgnorePattern));
+                modifToIgnore.add(compile(modifIgnorePattern));
             }
         }
-        return modifIgnore;
+        return modifToIgnore;
     }
 
     private Set<String> getNamedGroupCandidates(String regex) {
